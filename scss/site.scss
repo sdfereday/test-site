@@ -5,11 +5,41 @@ $brandlight: #990000;
 $white: #fff;
 $grey: #ccc;
 $greydark: #222;
+$tabletPortrait: 768px;
+
+.row .column.column-33, .row .column.column-34,
+.row .column.column-66, .row .column.column-67 {
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+
+@media (min-width: $tabletPortrait) {
+  .row .column.column-33, .row .column.column-34 {
+    flex: 0 0 33.3333%;
+    max-width: 33.3333%;
+  }
+  .row .column.column-66, .row .column.column-67 {
+    flex: 0 0 66.6666%;
+    max-width: 66.6666%;
+  }
+}
 
 body {
   margin: 0;
   padding: 0;
   background: $white;
+}
+
+header {
+  position: relative;
+}
+
+@media (min-width: $tabletPortrait) {
+  .row header {
+  &.column.column-33, &.column.column-34 {
+      max-width: 256px;
+    }
+  }
 }
 
 .heading {
@@ -21,8 +51,14 @@ body {
 }
 
 .sticky-header {
-  position: fixed;
+  position: static;
   top: 0;
+}
+
+@media (min-width: 768px) {
+  .sticky-header {
+    position: fixed;
+  }
 }
 
 nav {
