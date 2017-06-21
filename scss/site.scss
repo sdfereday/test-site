@@ -2,15 +2,21 @@
 
 $brand: #880000;
 $brandlight: #990000;
+$brandlighter: #DD0000;
 $white: #FDFDFD;
 $grey: #ccc;
 $greydark: #222;
+$dark: #333;
 $tabletPortrait: 768px;
 
 .row .column.column-33, .row .column.column-34,
 .row .column.column-66, .row .column.column-67 {
     flex: 0 0 100%;
     max-width: 100%;
+}
+
+.no-pad {
+  padding: 0;
 }
 
 @media (min-width: $tabletPortrait) {
@@ -33,6 +39,8 @@ body {
 
 header {
   position: relative;
+  background: $dark;
+  color: $white;
 }
 
 @media (min-width: $tabletPortrait) {
@@ -43,17 +51,10 @@ header {
   }
 }
 
-.heading {
-  width: 100%;
-  padding: 3em 0 1em;
-  margin-bottom: 0.5em;
-  float: left;
-  border-bottom: 1px solid $grey;
-}
-
 .sticky-header {
   position: static;
   top: 0;
+  padding: 0 0 0 .5rem;
 }
 
 @media (min-width: 768px) {
@@ -62,8 +63,20 @@ header {
   }
 }
 
+.heading {
+  width: 100%;
+  padding: 3em 0 1em 0.6em;
+  margin-bottom: 0;
+  float: left;
+}
+
 nav {
   float: left;
+  margin: 0 0 0 1.4em;
+  padding-top: 1em;
+  padding-bottom: 2em;
+  min-width: 12.5em;
+  border-top: 1px dotted $white;
   ul {
     list-style: none;
     padding: 0;
@@ -76,10 +89,10 @@ nav {
   a {
     padding-right: 2em;
     display: block;
-    color: $brand;
+    color: $white;
     transition: all 0.2s ease;
     &:hover {
-      color: $brandlight;
+      color: $brandlighter;
     }
   }
 }
@@ -87,6 +100,7 @@ nav {
 h2 span {
   display: block;
   font-size: 0.5em;
+  color: #AAA;
 }
 
 h4 span {
@@ -101,7 +115,9 @@ h4 span {
 }
 
 .posts {
-  padding-top: 2em;
+  .posts-inner {
+    padding: 2em 1.4em;
+  }
   pre {
     border-color: $brand;
   }
