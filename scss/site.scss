@@ -38,7 +38,7 @@ header {
 @media (min-width: $tabletPortrait) {
   .row header {
   &.column.column-33, &.column.column-34 {
-      max-width: 256px;
+      max-width: 264px;
     }
   }
 }
@@ -67,7 +67,7 @@ nav {
   ul {
     list-style: none;
     padding: 0;
-    margin: 1.5em 0 0;
+    margin: 0.9em 0 0;
   }
   li {
     padding: 0;
