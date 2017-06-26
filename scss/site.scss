@@ -94,6 +94,10 @@ h4 span {
   width: 100%; 
   margin-bottom: 1.5rem;
   background:  #efefef;
+  break-inside: avoid;
+  page-break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  -moz-column-break-inside: avoid;
   h4 {
     letter-spacing: 0.01em;
     font-weight: bold;
