@@ -1,0 +1,22 @@
+.row .column-md-break,
+.row .column.column-33.column-md-break,
+.row .column.column-66.column-md-break {
+    max-width: 100%;
+    flex: 0 0 100%;
+}
+
+@media (min-width: $md-width) {
+  
+    .row .column-md-break,
+    .row .column.column-33.column-md-break {
+        max-width: 33.3333%;
+        flex: 0 0 33.3333%;
+    }
+
+    .row .column-md-break,
+    .row .column.column-66.column-md-break {
+        flex: 0 0 66.6666%;
+        max-width: 66.6666%;
+    }
+
+}

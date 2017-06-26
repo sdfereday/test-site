@@ -1,5 +1,4 @@
-@import "milligram/milligram";
-
+// Variables
 $brand: #880000;
 $brandlight: #990000;
 $brandlighter: #DD0000;
@@ -7,28 +6,11 @@ $white: #FDFDFD;
 $grey: #ccc;
 $greydark: #222;
 $dark: #333;
-$tabletPortrait: 768px;
+$md-width: 768px;
+$sm-width: 486px;
 
-.row .column.column-33, .row .column.column-34,
-.row .column.column-66, .row .column.column-67 {
-    flex: 0 0 100%;
-    max-width: 100%;
-}
-
-.no-pad {
-  padding: 0;
-}
-
-@media (min-width: $tabletPortrait) {
-  .row .column.column-33, .row .column.column-34 {
-    flex: 0 0 33.3333%;
-    max-width: 33.3333%;
-  }
-  .row .column.column-66, .row .column.column-67 {
-    flex: 0 0 66.6666%;
-    max-width: 66.6666%;
-  }
-}
+// Extenstion for milligram
+@import "mgextension";
 
 body {
   margin: 0;
@@ -37,43 +19,30 @@ body {
   font-family: 'Spectral', serif;
 }
 
-header {
-  position: relative;
-  background: $dark;
-  color: $white;
-}
-
-@media (min-width: $tabletPortrait) {
-  .row header {
-  &.column.column-33, &.column.column-34 {
-      max-width: 264px;
-    }
-  }
-}
-
-.sticky-header {
-  position: static;
-  top: 0;
-  padding: 0 0 0 .5rem;
-}
-
-@media (min-width: 768px) {
-  .sticky-header {
-    position: fixed;
-  }
+.featured {
+  // ...
 }
 
 .heading {
-  width: 100%;
-  padding: 3em 0 1em 0.6em;
   margin-bottom: 0;
   float: left;
+  padding: 0.9em 0.5em 0 0.6em;
+  a {
+    letter-spacing: -0.05em;
+    font-weight: bold;
+    color: $dark;
+  }
 }
 
+main {
+ column-count: 4;
+}
+
+// Navigation
 nav {
-  float: left;
+  float: right;
   margin: 0 0 0 1.4em;
-  padding-top: 1em;
+  padding-top: 1.5em;
   padding-bottom: 2em;
   min-width: 12.5em;
   border-top: 1px dotted $white;
@@ -85,18 +54,22 @@ nav {
   li {
     padding: 0;
     margin: 0;
+    display: inline-block;
   }
   a {
     padding-right: 2em;
+    font-weight: bold;
     display: block;
-    color: $white;
+    color: $dark;
     transition: all 0.2s ease;
+    font-family: arial;
     &:hover {
       color: $brandlighter;
     }
   }
 }
 
+// Content
 h2 span {
   display: block;
   font-size: 0.5em;
@@ -108,23 +81,56 @@ h4 span {
   font-size: 0.6em;
 }
 
-.post a {
+.post .readme {
   color: $brandlight;
   font-size: 0.9em;
   border-bottom: 1px dotted $brandlight;
 }
 
-.posts {
-  .posts-inner {
-    padding: 2em 1.4em;
+.post {
+  font-family: arial;
+  display: inline-block;
+  //padding: 1rem;
+  width: 100%; 
+  margin-bottom: 1.5rem;
+  background:  #efefef;
+  h4 {
+    letter-spacing: 0.01em;
+    font-weight: bold;
+    color: $dark;
+  }
+  .post-inner {
+    padding: 1em;
+  }
+  p {
+    font-size: 0.9em;
   }
   pre {
     border-color: $brand;
   }
+  img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    transition: all 0.2s ease;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
 }
 
+// Footer
 footer {
   text-align: center;
   padding-top: 1em;
   font-size: 0.8em;
+}
+
+// Responsive overrides
+@media (min-width: $md-width) {
+  
+  .sticky-header, .sticky-feature {
+    position: fixed;
+  }
+
 }
