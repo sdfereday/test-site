@@ -17,6 +17,7 @@
 
     <!-- https://interfacelovers.com/ -->
     <div class="container">
+        
         <header class="row">
             <div class="column">
                 <h2 class="heading">
@@ -30,7 +31,8 @@
                 </nav>
             </div>
         </header>
-        <main>
+
+        <main class="grid">
 
             <!-- Post start -->
             <div class="post">
@@ -204,8 +206,15 @@
 
         </main>
 
+        <ul class="pagination">
+            <li class="active"><span>1</span></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+        </ul>
+
         <div class="row">
             <div class="column">
+                <hr />
                 <footer>
                     <p>
                         Some footer info &copy; 2017 Some Company
@@ -221,7 +230,8 @@
     var imgs = document.querySelectorAll('img');
 
     for(var i = 0; i < imgs.length; i++) {
-        imgs[i].style.height = Math.floor((Math.random() * 256) + 128) + 'px';
+        // imgs[i].style.height = Math.floor((Math.random() * 256) + 128) + 'px';
+        imgs[i].style.height = '230px';
     }
 
     </script>

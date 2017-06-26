@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Test Site</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Spectral" rel="stylesheet">
+    <!-- CSS Reset -->
+    <link rel="stylesheet" href="https://cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
+    <!-- Milligram CSS minified -->
+    <link rel="stylesheet" href="https://cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
+    <link href="css/site.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- https://interfacelovers.com/ -->
+    <div class="container">
+        <header class="row">
+            <div class="column">
+                <h2 class="heading">
+                    <a href="/">Site Title</a>
+                </h2>
+                <nav>
+                    <ul>
+                        <li><a href="#">// Archive</a></li>
+                        <li><a href="#">// Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <main>
+
+            <!-- Post start -->
+            <div class="post-detail clearfix">
+
+                <div class="post-image">
+                        <img src="https://unsplash.it/200/300/?random" />
+                    </div>
+
+                <div class="post-inner">
+
+                    <h4>
+                        Title
+                    </h4>
+                    <p>
+                        Lorem Ipsum is simply dummy text of t only five centuries, but also the leap into electronic
+                        typesetting, remaining essentially unchanged.
+                    </p>
+                    <pre><code>.milligram {
+color: #9b4dca;
+}
+</code></pre>
+                    <p>And that's all there is to it.</p>
+                                        
+                </div>
+
+            </div>
+            <!-- Post end -->
+
+        </main>
+
+        <div class="row">
+            <div class="column">
+                <footer>
+                    <p>
+                        Some footer info &copy; 2017 Some Company
+                    </p>
+                </footer>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+
+    var imgs = document.querySelectorAll('img');
+
+    for(var i = 0; i < imgs.length; i++) {
+        // imgs[i].style.height = Math.floor((Math.random() * 256) + 128) + 'px';
+        imgs[i].style.height = '300px';
+    }
+
+    </script>
+
+</body>
+
+</html>
