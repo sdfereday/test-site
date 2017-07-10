@@ -9,33 +9,42 @@ $dark: #333;
 $md-width: 768px;
 $sm-width: 486px;
 
-// Extenstion for milligram
+// Milligram < - css lib
+// https://tympanus.net/Development/CreativeLinkEffects/ < - links effects
 @import "mgextension";
+@import "codrops";
 
 body {
   margin: 0;
   padding: 0;
-  background: $white;
-  font-family: 'Spectral', serif;
+  background: #fafbfc;
+  font-family: 'Noto Sans', sans-serif;
 }
 
 .container {
   max-width: 1280px;
-}
-
-.featured {
-  // ...
-}
-
-.heading {
-  margin-bottom: 0;
-  float: left;
-  padding: 0.9em 0.5em 0 0.6em;
-  a {
-    letter-spacing: -0.05em;
-    font-weight: bold;
-    color: $dark;
+  &.container-fw {
+    max-width: 100%;
   }
+}
+
+header {
+  margin-top: 1em;
+  margin-bottom: 18px;
+}
+
+header .heading {
+  padding: 32px 0.5em 0 32px;
+  font-size: 1.4em;
+  a {
+    letter-spacing: 0.01em;
+    font-weight: bold;
+    color: #616161;
+  }
+}
+
+.contact {
+  padding: 32px 32px 0 0;
 }
 
 .grid {
@@ -44,31 +53,29 @@ body {
 
 // Navigation
 nav {
-  float: right;
-  margin: 0 0 0 1.4em;
+  width: 100%;
+  float: left;
+  margin: 0 auto;
+  text-align: center;
   padding-top: 1.5em;
   padding-bottom: 2em;
   min-width: 12.5em;
   border-top: 1px dotted $white;
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0.9em 0 0;
-  }
-  li {
-    padding: 0;
-    margin: 0;
-    display: inline-block;
-  }
   a {
-    padding-right: 2em;
-    font-weight: bold;
-    display: block;
-    color: $dark;
-    transition: all 0.2s ease;
-    font-family: arial;
-    &:hover {
-      color: $brandlighter;
+    padding: 0 2em;
+    margin: 0 1em;
+    height: 47px;
+	  line-height: 47px;
+    position: relative;
+    display: inline-block;
+    color: #aaa;
+    transition: all 0.6s ease;
+    &:hover, &.active {
+      color: #555;
+    }
+    &:before, &:after {
+      color: #aaa;
+      background: #aaa;
     }
   }
 }
@@ -91,14 +98,7 @@ h4 span {
   border-bottom: 1px dotted $brandlight;
 }
 
-.post, .post-detail {
-  font-family: arial;
-  display: inline-block;
-  //padding: 1rem;
-  width: 100%;
-  height: 30em;
-  margin-bottom: 1.5rem;
-  background:  #efefef;
+.post {
   break-inside: avoid;
   page-break-inside: avoid;
   -webkit-column-break-inside: avoid;
@@ -109,7 +109,22 @@ h4 span {
     color: $dark;
   }
   .post-inner {
-    padding: 1em;
+    padding: 3em;
+    background: #fff;
+    max-width: 60%;
+    margin: 0 auto 65px;
+    text-align: left;
+    color: $dark;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 1.3em;
+    &.enlarged {
+      max-width: 80%;
+    }
+    h3, h4 {
+      font-weight: bold;
+      font-size: 1.8em;
+    }
+    box-shadow: inset 0 0 0 1px #dae4ed, 0 5px 15px -5px rgba(0,0,0,.1);
   }
   p {
     font-size: 0.9em;
@@ -124,25 +139,6 @@ h4 span {
     transition: all 0.2s ease;
     &:hover {
       opacity: 0.8;
-    }
-  }
-}
-
-.post-detail {
-  height: auto;
-  text-align: center;
-  background: none;
-  .post-inner {
-    max-width: 60%;
-    margin: 0 auto;
-    text-align: left;
-    color: $dark;
-    font-family: 'Spectral', serif;
-    font-size: 1.3em;
-    h4 {
-      font-weight: bold;
-      font-family: arial;
-      font-size: 1.8em;
     }
   }
 }
@@ -184,15 +180,41 @@ h4 span {
 // Footer
 footer {
   text-align: center;
-  padding-top: 1em;
+  padding-bottom: 45px;
   font-size: 0.8em;
 }
 
-// Responsive overrides
-@media (min-width: $md-width) {
-  
-  .sticky-header, .sticky-feature {
-    position: fixed;
-  }
+// Doodads
+.button-red {
+  background-color:#800;
+  border-color: #800;
+}
+.button-red.button-clear,
+.button-red.button-outline {
+  background-color: transparent;
+  color: #800;
+}
+.button-red.button-clear {
+  border-color: transparent;
+}
 
+.text-right {
+  text-align: right;
+}
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+
+.fa {
+  margin-left: 0.4em;
+  font-size: 1.3em!important;
+  opacity: 0.5;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.fa:hover {
+  opacity: 1;
 }
