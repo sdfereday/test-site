@@ -39,100 +39,27 @@
     <div class="container">
         <main class="row">
 
-            <div class="column">
+            <div class="column" data-bind="foreach: posts">
 
-            <!-- Post start -->
-            <div class="post clearfix">
+                <!-- Post start -->
+                <div class="post clearfix">
 
-                <div class="post-image">
-                    <!--<img src="https://unsplash.it/200/300/?random" />-->
+                    <div class="post-inner">
+
+                        <p>
+                            <strong><span data-bind="text: title">...</span></strong>
+                        </p>
+
+                        <span class="date" data-bind="text: date">...</span>
+
+                        <div data-bind="html: formattedBody">...</div>
+
+                        <button class="button-outline button-red">Read</button>
+
+                    </div>
+
                 </div>
-
-                <div class="post-inner">
-
-                    <h4>
-                        Title
-                    </h4>
-                    <p>
-                        Lorem Ipsum is simply dummy text of t only five centuries, but also the leap into electronic
-                        typesetting, remaining essentially unchanged.
-                    </p>
-                    <pre><code>.milligram {
-color: #9b4dca;
-}
-</code></pre>
-                    <p>And that's all there is to it.</p>
-
-                    <button class="button-outline button-red">
-                        Read
-                    </button>
-                                        
-                </div>
-
-            </div>
-            <!-- Post end -->
-
-            <!-- Post start -->
-            <div class="post clearfix">
-
-                <div class="post-image">
-                    <!--<img src="https://unsplash.it/200/300/?random" />-->
-                </div>
-
-                <div class="post-inner">
-
-                    <h4>
-                        Title
-                    </h4>
-                    <p>
-                        Lorem Ipsum is simply dummy text of t only five centuries, but also the leap into electronic
-                        typesetting, remaining essentially unchanged.
-                    </p>
-                    <pre><code>.milligram {
-color: #9b4dca;
-}
-</code></pre>
-                    <p>And that's all there is to it.</p>
-
-                    <button class="button-outline button-red">
-                        Read
-                    </button>
-                                        
-                </div>
-
-            </div>
-            <!-- Post end -->
-
-            <!-- Post start -->
-            <div class="post clearfix">
-
-                <div class="post-image">
-                    <!--<img src="https://unsplash.it/200/300/?random" />-->
-                </div>
-
-                <div class="post-inner">
-
-                    <h4>
-                        Title
-                    </h4>
-                    <p>
-                        Lorem Ipsum is simply dummy text of t only five centuries, but also the leap into electronic
-                        typesetting, remaining essentially unchanged.
-                    </p>
-                    <pre><code>.milligram {
-color: #9b4dca;
-}
-</code></pre>
-                    <p>And that's all there is to it.</p>
-
-                    <button class="button-outline button-red">
-                        Read
-                    </button>
-                                        
-                </div>
-
-            </div>
-            <!-- Post end -->
+                <!-- Post end -->
 
             </div>
 
@@ -148,7 +75,12 @@ color: #9b4dca;
             </div>
         </div>
 
-    </div>
+        </div>
+
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-debug.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.7.1/showdown.min.js"></script>
+        <script type="text/javascript" src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+        <script src="app.js"></script>
 
 </body>
 
