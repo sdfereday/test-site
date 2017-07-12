@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1309,7 +1309,7 @@ m.vnode = Vnode
 if (true) module["exports"] = m
 else window.m = m
 }());
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3).setImmediate, __webpack_require__(1)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4).setImmediate, __webpack_require__(1)))
 
 /***/ }),
 /* 1 */
@@ -1342,10 +1342,38 @@ module.exports = g;
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
+// src/models/Post.js
+var m = __webpack_require__(0);
+var Post = {
+    list: [],
+    current: {},
+    loadPosts: function() {
+        return m.request({
+            method: "GET",
+            url: "https://sd-blog-c1b48.firebaseio.com/posts.json"
+        })
+        .then(function(snap) {
+
+            for(let key in snap) {
+                Post.list.push(snap[key]);
+            }
+
+        });
+    },
+    loadPost: function(guid) {
+        // Should load a post if none available (try at least)
+        Post.current = Post.list.find(x => x.guid === guid);
+    }
+};
+
+module.exports = Post;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
 (function () {
-
-    'use strict';
-
+    
     /// Helpers
     class ArrayHelpers {
 
@@ -1370,17 +1398,6 @@ module.exports = g;
 
     }
 
-    /// Firebase area
-    // Initialize Firebase
-    var config = {
-        apiKey: "AIzaSyB6jZToAkQXpySSQ4omQ7SKP23TQUQDF8M",
-        authDomain: "sd-blog-c1b48.firebaseapp.com",
-        databaseURL: "https://sd-blog-c1b48.firebaseio.com",
-        storageBucket: "sd-blog-c1b48.appspot.com"
-    };
-
-    firebase.initializeApp(config);
-
     /// - Global class setup for apps
     /// https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Classes
     /// http://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/
@@ -1401,33 +1418,6 @@ module.exports = g;
     }
 
     // Mixins
-    let FirebaseController = (superclass) => class extends superclass {
-
-        queryFirebase(id, cb, ctx) {
-
-            if (typeof cb != 'function')
-                throw ":- Callback expected.";
-
-            ctx = ctx ? ctx : this;
-
-            let ref = firebase.database().ref(id).limitToLast(100);
-
-            ref.once('value', function (snap) {
-
-                let list = [];
-
-                snap.forEach(function (d) {
-                    list.push(d.val());
-                });
-
-                cb.call(ctx, list);
-
-            });
-
-        }
-
-    };
-
     let Collection = (superclass) => class extends superclass {
 
         get(id) {
@@ -1482,23 +1472,23 @@ module.exports = g;
     class Post {
 
         constructor(data) {
-            this.guid = ko.observable(data.guid);
-            this.title = ko.observable(data.title);
-            this.body = ko.observable(data.body);
-            this.formattedBody = ko.computed(function () {
-                return Formatter.makeHtml(this.body());
-            }, this);
-            this.date = ko.observable(data.date);
+            this.guid = data.guid;
+            this.title = data.title;
+            this.body = data.body;
+            this.formattedBody = (function () {
+                //return Formatter.makeHtml(this.body());
+            });
+            this.date = data.date;
             //this.tags = tags;
             //this.category = category;
             // For routing in data
-            this.url = ko.observable("/" + data.title);
+            this.url = "/" + data.title;
         }
 
     }
 
     // Some amazing post collection class (you might not want your 'fetcher' being used by the posts however, it looks a little strange)
-    class Posts extends mix(PostCollective).with(Collection, FirebaseController) {
+    class Posts extends mix(PostCollective).with(Collection) {
         // I have access to both the prototypal method above, and the other 'useful' bits in the mixins <3
     }
 
@@ -1506,30 +1496,21 @@ module.exports = g;
     let thePosts = new Posts();
 
     /// Mithril https://mithril.js.org/simple-application.html
+    /// https://webpack.js.org/guides/getting-started/#basic-setup
     var m = __webpack_require__(0); // Will load when compiled via npm modules and webpack
 
-    var postList = __webpack_require__(6);
+    var postList = __webpack_require__(7);
+    var postDetail = __webpack_require__(8);
 
-    m.mount(document.querySelector('.m-content'), postList);
-
-    // UI Bit
-    // let viewModel = {
-    //     posts: thePosts.data
-    // };
-
-    // ko.applyBindings(viewModel);
-
-    // // Query some more posts test (obviously would optimize)
-    // thePosts.queryFirebase('posts', function (res) {
-    //     thePosts
-    //         .addPosts(res)
-    //         .sortByDate();
-    // });
+    m.route(document.querySelector('.m-content'), "/archive", {
+        "/archive" : postList,
+        "/posts/:guid": postDetail
+    });
 
 })();
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = Function.prototype.apply;
@@ -1582,13 +1563,13 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(4);
+__webpack_require__(5);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -1778,10 +1759,10 @@ exports.clearImmediate = clearImmediate;
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(6)))
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -1971,43 +1952,43 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // src/views/PostList.js
 var m = __webpack_require__(0);
-var Post = __webpack_require__(7);
+var PostModel = __webpack_require__(2);
 
 module.exports = {
-    oninit: Post.loadPosts,
+    oninit: PostModel.loadPosts,
     view: function () {
-        return m(".post-list", Post.list.map(function (post) {
-            return m(".post", post.title);
+        return m(".post-list", PostModel.list.map(function (post) {
+            return m(".post", [
+                m("span.title", {value: post.title}, "test"),
+                m("a.user-list-item", {href: "/posts/" + post.guid, oncreate: m.route.link}, "read")
+            ]);
         }));
     }
 }
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// src/models/Post.js
+// src/views/PostDetail.js
 var m = __webpack_require__(0);
-var Post = {
-    list: [],
-    loadPosts: function() {
-        return m.request({
-            method: "GET",
-            url: "https://rem-rest-api.herokuapp.com/api/users",
-            withCredentials: true,
-        })
-        .then(function(result) {
-            Post.list = result.data;
-        })
-    }
-};
+var PostModel = __webpack_require__(2);
 
-module.exports = Post;
+module.exports = {
+    oninit: function(vnode) {
+        PostModel.loadPost(vnode.attrs.guid);
+    },
+    view: function () {
+        return m(".post", [
+            m("span", PostModel.current.title)
+        ]);
+    }
+}
 
 /***/ })
 /******/ ]);

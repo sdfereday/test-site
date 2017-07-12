@@ -1,7 +1,5 @@
 (function () {
-
-    'use strict';
-
+    
     /// Helpers
     class ArrayHelpers {
 
@@ -26,17 +24,6 @@
 
     }
 
-    /// Firebase area
-    // Initialize Firebase
-    var config = {
-        apiKey: "AIzaSyB6jZToAkQXpySSQ4omQ7SKP23TQUQDF8M",
-        authDomain: "sd-blog-c1b48.firebaseapp.com",
-        databaseURL: "https://sd-blog-c1b48.firebaseio.com",
-        storageBucket: "sd-blog-c1b48.appspot.com"
-    };
-
-    firebase.initializeApp(config);
-
     /// - Global class setup for apps
     /// https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Classes
     /// http://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/
@@ -57,33 +44,6 @@
     }
 
     // Mixins
-    let FirebaseController = (superclass) => class extends superclass {
-
-        queryFirebase(id, cb, ctx) {
-
-            if (typeof cb != 'function')
-                throw ":- Callback expected.";
-
-            ctx = ctx ? ctx : this;
-
-            let ref = firebase.database().ref(id).limitToLast(100);
-
-            ref.once('value', function (snap) {
-
-                let list = [];
-
-                snap.forEach(function (d) {
-                    list.push(d.val());
-                });
-
-                cb.call(ctx, list);
-
-            });
-
-        }
-
-    };
-
     let Collection = (superclass) => class extends superclass {
 
         get(id) {
@@ -138,23 +98,23 @@
     class Post {
 
         constructor(data) {
-            this.guid = ko.observable(data.guid);
-            this.title = ko.observable(data.title);
-            this.body = ko.observable(data.body);
-            this.formattedBody = ko.computed(function () {
-                return Formatter.makeHtml(this.body());
-            }, this);
-            this.date = ko.observable(data.date);
+            this.guid = data.guid;
+            this.title = data.title;
+            this.body = data.body;
+            this.formattedBody = (function () {
+                //return Formatter.makeHtml(this.body());
+            });
+            this.date = data.date;
             //this.tags = tags;
             //this.category = category;
             // For routing in data
-            this.url = ko.observable("/" + data.title);
+            this.url = "/" + data.title;
         }
 
     }
 
     // Some amazing post collection class (you might not want your 'fetcher' being used by the posts however, it looks a little strange)
-    class Posts extends mix(PostCollective).with(Collection, FirebaseController) {
+    class Posts extends mix(PostCollective).with(Collection) {
         // I have access to both the prototypal method above, and the other 'useful' bits in the mixins <3
     }
 
@@ -162,24 +122,15 @@
     let thePosts = new Posts();
 
     /// Mithril https://mithril.js.org/simple-application.html
+    /// https://webpack.js.org/guides/getting-started/#basic-setup
     var m = require("mithril"); // Will load when compiled via npm modules and webpack
 
     var postList = require("./views/PostList");
+    var postDetail = require("./views/PostDetail");
 
-    m.mount(document.querySelector('.m-content'), postList);
-
-    // UI Bit
-    // let viewModel = {
-    //     posts: thePosts.data
-    // };
-
-    // ko.applyBindings(viewModel);
-
-    // // Query some more posts test (obviously would optimize)
-    // thePosts.queryFirebase('posts', function (res) {
-    //     thePosts
-    //         .addPosts(res)
-    //         .sortByDate();
-    // });
+    m.route(document.querySelector('.m-content'), "/archive", {
+        "/archive" : postList,
+        "/posts/:guid": postDetail
+    });
 
 })();
