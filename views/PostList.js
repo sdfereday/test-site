@@ -1,15 +1,20 @@
 // src/views/PostList.js
 var m = require("mithril");
 var PostModel = require("../models/Post");
+var MarkdownHelper = require("../helpers/MarkdownHelper");
 
 module.exports = {
     oninit: PostModel.loadPosts,
     view: function () {
         return m(".post-list", PostModel.list.map(function (post) {
-            return m(".post", [
-                m("span.title", {value: post.title}, "test"),
-                m("a.user-list-item", {href: "/posts/" + post.guid, oncreate: m.route.link}, "read")
-            ]);
+            return m(".post.clearfix",
+                m(".post-inner", [
+                    m("p.title", post.title),
+                    m("span.date", post.date),
+                    m("div", m.trust(MarkdownHelper.format(post.body))),
+                    m("a.button.button-outline.button-red", { href: "/posts/" + post.guid, oncreate: m.route.link }, "read")
+                ])
+            );
         }));
     }
 }
