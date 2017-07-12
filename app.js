@@ -147,7 +147,7 @@
             //this.tags = tags;
             //this.category = category;
             // For routing in data
-            //this.url = ko.observable("/" + data.category + "/" + data.title);
+            this.url = ko.observable("/" + data.title);
         }
 
     }
