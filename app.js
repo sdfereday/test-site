@@ -1,7 +1,8 @@
-(function(){
+(function () {
 
     'use strict';
 
+    /// Helpers
     class ArrayHelpers {
 
         static shuffle(a) {
@@ -99,7 +100,7 @@
         }
 
     };
-    
+
     // External markdown formatting (needs more research as this would be better as a helper)
     // https://github.com/showdownjs/showdown
     // https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
@@ -160,18 +161,25 @@
     // Make it happen
     let thePosts = new Posts();
 
+    /// Mithril https://mithril.js.org/simple-application.html
+    var m = require("mithril"); // Will load when compiled via npm modules and webpack
+
+    var postList = require("./views/PostList");
+
+    m.mount(document.querySelector('.m-content'), postList);
+
     // UI Bit
-    let viewModel = {
-        posts: thePosts.data
-    };
+    // let viewModel = {
+    //     posts: thePosts.data
+    // };
 
-    ko.applyBindings(viewModel);
+    // ko.applyBindings(viewModel);
 
-    // Query some more posts test (obviously would optimize)
-    thePosts.queryFirebase('posts', function (res) {
-        thePosts
-            .addPosts(res)
-            .sortByDate();
-    });
+    // // Query some more posts test (obviously would optimize)
+    // thePosts.queryFirebase('posts', function (res) {
+    //     thePosts
+    //         .addPosts(res)
+    //         .sortByDate();
+    // });
 
 })();
