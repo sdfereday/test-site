@@ -12,7 +12,8 @@ module.exports = {
             m(".post-inner", [
                 m("p.title", PostModel.current.title),
                 m("span.date", PostModel.current.date),
-                m("div", m.trust(MarkdownHelper.format(PostModel.current.body)))
+                m("div", m.trust(MarkdownHelper.format(PostModel.current.body))),
+                m("a.button.button-outline.button-red", { href: "./", oncreate: m.route.link }, "back")
             ])
         );
     }
