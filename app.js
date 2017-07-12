@@ -31,9 +31,7 @@
         apiKey: "AIzaSyB6jZToAkQXpySSQ4omQ7SKP23TQUQDF8M",
         authDomain: "sd-blog-c1b48.firebaseapp.com",
         databaseURL: "https://sd-blog-c1b48.firebaseio.com",
-        projectId: "sd-blog-c1b48",
-        storageBucket: "sd-blog-c1b48.appspot.com",
-        messagingSenderId: "896841901128"
+        storageBucket: "sd-blog-c1b48.appspot.com"
     };
 
     firebase.initializeApp(config);
