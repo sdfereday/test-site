@@ -256,8 +256,16 @@ footer {
 @media (min-width: 60.0rem) {
 
   .post .post-inner {
-    max-width: 60%;
+    max-width: 80%;
     margin: 0 auto 65px;
+  }
+
+}
+
+@media (min-width: 80.0rem) {
+
+  .post .post-inner {
+    max-width: 60%;
   }
 
 }
