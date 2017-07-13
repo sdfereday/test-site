@@ -1,13 +1,14 @@
-class StringHelper {
+class StringHelpers {
 
-    truncate(n, useWordBoundary) {
+    static truncate(n, useWordBoundary, endCap) {
+        endCap = endCap ? endCap : "...";
         if (this.length <= n) { return this; }
         var subString = this.substr(0, n - 1);
         return (useWordBoundary ?
             subString.substr(0, subString.lastIndexOf(' ')) :
-            subString) + "&hellip";
+            subString) + endCap;
     };
 
 }
 
-module.exports = StringHelper;
+module.exports = StringHelpers;

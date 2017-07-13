@@ -4,8 +4,13 @@ var m = require("mithril"); // Will load when compiled via npm modules and webpa
 
 var postList = require("./views/PostList");
 var postDetail = require("./views/PostDetail");
-
-m.route(document.querySelector('.m-content'), "/archive", {
+var defaultLocation = "/archive";
+var routes = {
+    "./": postList,
+    "/": postList,
     "/archive": postList,
     "/posts/:guid": postDetail
-});
+};
+
+m.route(document.querySelector('.m-content'), defaultLocation, routes);
+m.render(document.querySelector('.heading'), m("a", { href: "./", oncreate: m.route.link }, "DevNoodle Blog"));

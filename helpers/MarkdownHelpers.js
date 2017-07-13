@@ -3,7 +3,7 @@
 // https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
 let Formatter = new showdown.Converter();
 
-class MarkdownHelper {
+class MarkdownHelpers {
 
     static format(txt) {
         return Formatter.makeHtml(txt);
@@ -11,4 +11,4 @@ class MarkdownHelper {
 
 }
 
-module.exports = MarkdownHelper;
+module.exports = MarkdownHelpers;

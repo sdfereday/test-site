@@ -40,6 +40,10 @@ header .heading {
     letter-spacing: 0.01em;
     font-weight: bold;
     color: #616161;
+    transition: all 0.2s ease;
+    &:hover {
+      color: #999;
+    }
   }
 }
 
@@ -81,6 +85,11 @@ nav {
 }
 
 // Content
+a {
+  color: #bb2424;
+  transition: color 0.2s;
+}
+
 h2 span {
   display: block;
   font-size: 0.5em;
@@ -109,9 +118,8 @@ h4 span {
     color: $dark;
   }
   .post-inner {
-    padding: 3em;
+    padding: 1em;
     background: #fff;
-    max-width: 60%;
     margin: 0 auto 65px;
     text-align: left;
     color: $dark;
@@ -217,4 +225,28 @@ footer {
 }
 .fa:hover {
   opacity: 1;
+}
+
+/// Animations
+.enter-animation { opacity: 0; animation: fade-in 0.2s 0.8s ease-in forwards; }
+@keyframes fade-in {
+    from {opacity:0;}
+    to {opacity:1;}
+}
+
+/// Responsive
+@media (min-width: 40.0rem) {
+
+  .post .post-inner {
+    padding: 3em;
+  }
+
+}
+
+@media (min-width: 80.0rem) {
+
+  .post .post-inner {
+    max-width: 60%;
+  }
+
 }

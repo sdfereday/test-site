@@ -1,0 +1,12 @@
+{
+  "name": "devnoodle-blog",
+  "version": "0.0.0",
+  "private": true,
+  "homepage": "http://www.devnoodle.uk",
+  "author": "Sam Fereday",
+  "devDependencies": {},
+  "dependencies": {
+    "animatelo": "^1.0.3",
+    "mithril": "^1.1.3"
+  }
+}

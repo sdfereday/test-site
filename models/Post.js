@@ -1,9 +1,14 @@
 // src/models/Post.js
 var m = require("mithril");
+var ObjectHelpers = require("../helpers/ObjectHelpers");
 var Post = {
     list: [],
     current: {},
     loadPosts: function() {
+        
+        if(Post.list.length > 0)
+            return;
+
         return m.request({
             method: "GET",
             url: "https://sd-blog-c1b48.firebaseio.com/posts.json"
@@ -15,6 +20,7 @@ var Post = {
             }
 
         });
+
     },
     loadPost: function(guid) {
         
@@ -28,12 +34,7 @@ var Post = {
                 url: 'https://sd-blog-c1b48.firebaseio.com/posts.json?orderBy="guid"&equalTo="' + guid + '"&print=pretty' 
             })
             .then(function(snap) {
-                // This isn't the right way to do it.
-                console.log(snap);
-                for(var key in snap)
-                {
-                    Post.current = snap[key];
-                }
+                Post.current = ObjectHelpers.firstInObject(snap);
             });
         }
             
