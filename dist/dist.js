@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1309,7 +1309,7 @@ m.vnode = Vnode
 if (true) module["exports"] = m
 else window.m = m
 }());
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5).setImmediate, __webpack_require__(1)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6).setImmediate, __webpack_require__(1)))
 
 /***/ }),
 /* 1 */
@@ -1344,7 +1344,7 @@ module.exports = g;
 
 // src/models/Post.js
 var m = __webpack_require__(0);
-var ObjectHelpers = __webpack_require__(9);
+var ObjectHelpers = __webpack_require__(10);
 var Post = {
     list: [],
     current: {},
@@ -1409,13 +1409,36 @@ module.exports = MarkdownHelpers;
 
 /***/ }),
 /* 4 */
+/***/ (function(module, exports) {
+
+class StringHelpers {
+
+    static truncate(n, useWordBoundary, endCap) {
+        endCap = endCap ? endCap : "...";
+        if (this.length <= n) { return this; }
+        var subString = this.substr(0, n - 1);
+        return (useWordBoundary ?
+            subString.substr(0, subString.lastIndexOf(' ')) :
+            subString) + endCap;
+    }
+
+    static dateToReadable(ms) {
+        return new Date(ms).toString();
+    }
+
+}
+
+module.exports = StringHelpers;
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /// Mithril https://mithril.js.org/simple-application.html
 /// https://webpack.js.org/guides/getting-started/#basic-setup
 var m = __webpack_require__(0); // Will load when compiled via npm modules and webpack
 
-var postList = __webpack_require__(8);
+var postList = __webpack_require__(9);
 var postDetail = __webpack_require__(11);
 var defaultLocation = "/archive";
 var routes = {
@@ -1429,7 +1452,7 @@ m.route(document.querySelector('.m-content'), defaultLocation, routes);
 m.render(document.querySelector('.heading'), m("a", { href: "./", oncreate: m.route.link }, "DevNoodle Blog"));
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = Function.prototype.apply;
@@ -1482,13 +1505,13 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(6);
+__webpack_require__(7);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -1678,10 +1701,10 @@ exports.clearImmediate = clearImmediate;
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(8)))
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -1871,7 +1894,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // src/views/PostList.js
@@ -1879,7 +1902,7 @@ var m = __webpack_require__(0);
 // var anims = require("animatelo"); <-- broken
 var PostModel = __webpack_require__(2);
 var MarkdownHelpers = __webpack_require__(3);
-var StringHelpers = __webpack_require__(10);
+var StringHelpers = __webpack_require__(4);
 
 module.exports = {
     oninit: PostModel.loadPosts,
@@ -1896,7 +1919,7 @@ module.exports = {
             return m(".post.clearfix",
                 m(".post-inner", [
                     m("p.title", post.title),
-                    m("span.date", post.date),
+                    m("span.date", StringHelpers.dateToReadable(post.date)),
                     m("div", m.trust(MarkdownHelpers.format(
                         StringHelpers.truncate.apply(post.body, [124, true])
                     ))),
@@ -1908,7 +1931,7 @@ module.exports = {
 }
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports) {
 
 class ObjectHelpers {
@@ -1922,25 +1945,6 @@ class ObjectHelpers {
 module.exports = ObjectHelpers;
 
 /***/ }),
-/* 10 */
-/***/ (function(module, exports) {
-
-class StringHelpers {
-
-    static truncate(n, useWordBoundary, endCap) {
-        endCap = endCap ? endCap : "...";
-        if (this.length <= n) { return this; }
-        var subString = this.substr(0, n - 1);
-        return (useWordBoundary ?
-            subString.substr(0, subString.lastIndexOf(' ')) :
-            subString) + endCap;
-    };
-
-}
-
-module.exports = StringHelpers;
-
-/***/ }),
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1948,6 +1952,7 @@ module.exports = StringHelpers;
 var m = __webpack_require__(0);
 var PostModel = __webpack_require__(2);
 var MarkdownHelpers = __webpack_require__(3);
+var StringHelpers = __webpack_require__(4);
 
 module.exports = {
     oninit: function (vnode) {
@@ -1965,7 +1970,7 @@ module.exports = {
         return m(".post.clearfix",
             m(".post-inner", [
                 m("p.title", PostModel.current.title),
-                m("span.date", PostModel.current.date),
+                m("span.date", StringHelpers.dateToReadable(PostModel.current.date)),
                 m("div", m.trust(MarkdownHelpers.format(PostModel.current.body))),
                 m("a.button.button-outline.button-red", { href: "./", oncreate: m.route.link }, "back")
             ])

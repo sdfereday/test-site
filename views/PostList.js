@@ -20,7 +20,7 @@ module.exports = {
             return m(".post.clearfix",
                 m(".post-inner", [
                     m("p.title", post.title),
-                    m("span.date", post.date),
+                    m("span.date", StringHelpers.dateToReadable(post.date)),
                     m("div", m.trust(MarkdownHelpers.format(
                         StringHelpers.truncate.apply(post.body, [124, true])
                     ))),

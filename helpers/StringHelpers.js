@@ -7,7 +7,11 @@ class StringHelpers {
         return (useWordBoundary ?
             subString.substr(0, subString.lastIndexOf(' ')) :
             subString) + endCap;
-    };
+    }
+
+    static dateToReadable(ms) {
+        return new Date(ms).toString();
+    }
 
 }
 

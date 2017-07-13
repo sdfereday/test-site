@@ -2,6 +2,7 @@
 var m = require("mithril");
 var PostModel = require("../models/Post");
 var MarkdownHelpers = require("../helpers/MarkdownHelpers");
+var StringHelpers = require("../helpers/StringHelpers");
 
 module.exports = {
     oninit: function (vnode) {
@@ -19,7 +20,7 @@ module.exports = {
         return m(".post.clearfix",
             m(".post-inner", [
                 m("p.title", PostModel.current.title),
-                m("span.date", PostModel.current.date),
+                m("span.date", StringHelpers.dateToReadable(PostModel.current.date)),
                 m("div", m.trust(MarkdownHelpers.format(PostModel.current.body))),
                 m("a.button.button-outline.button-red", { href: "./", oncreate: m.route.link }, "back")
             ])

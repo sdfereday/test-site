@@ -90,6 +90,14 @@ a {
   transition: color 0.2s;
 }
 
+.date {
+  display: block;
+  padding-bottom: 2em;
+  font-size: 0.7em;
+  font-style: italic;
+  color: #555;
+}
+
 h2 span {
   display: block;
   font-size: 0.5em;
@@ -116,6 +124,11 @@ h4 span {
     letter-spacing: 0.01em;
     font-weight: bold;
     color: $dark;
+  }
+  .title {
+    margin-bottom: 0;
+    font-size: 4.6rem;
+    line-height: 1.2;
   }
   .post-inner {
     padding: 1em;
