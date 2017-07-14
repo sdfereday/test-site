@@ -1345,6 +1345,8 @@ module.exports = g;
 // src/models/Post.js
 var m = __webpack_require__(0);
 var ObjectHelpers = __webpack_require__(10);
+var ArrayHelpers = __webpack_require__(11);
+
 var Post = {
     list: [],
     current: {},
@@ -1362,6 +1364,8 @@ var Post = {
             for(let key in snap) {
                 Post.list.push(snap[key]);
             }
+
+            Post.list.sort((x, y) => ArrayHelpers.sort(x, y));
 
         });
 
@@ -1439,7 +1443,7 @@ module.exports = StringHelpers;
 var m = __webpack_require__(0); // Will load when compiled via npm modules and webpack
 
 var postList = __webpack_require__(9);
-var postDetail = __webpack_require__(11);
+var postDetail = __webpack_require__(12);
 var defaultLocation = "/archive";
 var routes = {
     "./": postList,
@@ -1946,6 +1950,35 @@ module.exports = ObjectHelpers;
 
 /***/ }),
 /* 11 */
+/***/ (function(module, exports) {
+
+class ArrayHelpers {
+
+    static shuffle(a) {
+        for (let i = a.length; i; i--) {
+            let j = Math.floor(Math.random() * i);
+            [a[i - 1], a[j]] = [a[j], a[i - 1]];
+        }
+        return a;
+    }
+
+    static sort(a, b, type) {
+        type = type ? type : "desc";
+        return type === "desc" ? b - a : a - b;
+    }
+
+    static objToArray(obj) {
+        return Object.keys(obj).map(function (e) {
+            return [Number(e), obj[e]];
+        });
+    }
+
+}
+
+module.exports = ArrayHelpers;
+
+/***/ }),
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // src/views/PostDetail.js

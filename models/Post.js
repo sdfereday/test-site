@@ -1,6 +1,8 @@
 // src/models/Post.js
 var m = require("mithril");
 var ObjectHelpers = require("../helpers/ObjectHelpers");
+var ArrayHelpers = require("../helpers/ArrayHelpers");
+
 var Post = {
     list: [],
     current: {},
@@ -18,6 +20,8 @@ var Post = {
             for(let key in snap) {
                 Post.list.push(snap[key]);
             }
+
+            Post.list.sort((x, y) => ArrayHelpers.sort(x, y));
 
         });
 
