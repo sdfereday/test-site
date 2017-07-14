@@ -1325,55 +1325,48 @@ let PostData = [];
 let Post = {
     list: [],
     current: {},
-    filterByTag: function(tag) { console.log(tag);
+    filterByTag: function (tag) {
         Post.list = Post.list.filter(function (post) {
             let tags = ArrayHelpers.stringToArray(post.tags);
-            return tags.some(function(item){
+            return tags.some(function (item) {
                 return item.length > 0 && item.toLowerCase() === tag.toLowerCase();
             });
         });
     },
-    resetFilters: function() {
+    resetFilters: function () {
         Post.list = PostData;
     },
-    loadPosts: function() {
-        
-        if(Post.list.length > 0)
-            return;
+    loadPosts: function () {
+
+        if (Post.list.length > 0) return;
 
         return m.request({
             method: "GET",
             url: "https://sd-blog-c1b48.firebaseio.com/posts.json"
-        })
-        .then(function(snap) {
+        }).then(function (snap) {
 
-            for(let key in snap) {
+            for (let key in snap) {
                 Post.list.push(snap[key]);
             }
 
             PostData = Post.list.sort((x, y) => ArrayHelpers.sort(x.date, y.date));
             Post.list = PostData;
-
         });
-
     },
-    loadPost: function(guid) {
-        
+    loadPost: function (guid) {
+
         // Should load a post if none available (try at least)
         Post.current = Post.list.find(x => x.guid === guid);
-        
-        if(!Post.current) {
+
+        if (!Post.current) {
             Post.current = {};
             return m.request({
                 method: "GET",
-                url: 'https://sd-blog-c1b48.firebaseio.com/posts.json?orderBy="guid"&equalTo="' + guid + '"&print=pretty' 
-            })
-            .then(function(snap) {
+                url: 'https://sd-blog-c1b48.firebaseio.com/posts.json?orderBy="guid"&equalTo="' + guid + '"&print=pretty'
+            }).then(function (snap) {
                 Post.current = ObjectHelpers.firstInObject(snap);
             });
         }
-            
-
     }
 };
 
@@ -1387,11 +1380,11 @@ class StringHelpers {
 
     static truncate(n, useWordBoundary, endCap) {
         endCap = endCap ? endCap : "...";
-        if (this.length <= n) { return this; }
+        if (this.length <= n) {
+            return this;
+        }
         var subString = this.substr(0, n - 1);
-        return (useWordBoundary ?
-            subString.substr(0, subString.lastIndexOf(' ')) :
-            subString) + endCap;
+        return (useWordBoundary ? subString.substr(0, subString.lastIndexOf(' ')) : subString) + endCap;
     }
 
     static dateToReadable(ms) {
@@ -1400,7 +1393,7 @@ class StringHelpers {
 
     static removeColon(str) {
         return str.replace(/^:/, '');
-    } 
+    }
 
 }
 
@@ -1500,17 +1493,17 @@ let postModel = __webpack_require__(1);
 let defaultLocation = "/archive";
 
 let routeActions = {
-    resetPosts: function(){
+    resetPosts: function () {
         postModel.resetFilters();
         return postList;
     }
 };
 
 let routes = {
-    "./":  {
+    "./": {
         onmatch: routeActions.resetPosts
     },
-    "/":  {
+    "/": {
         onmatch: routeActions.resetPosts
     },
     "/archive": {
@@ -1996,22 +1989,11 @@ let PostList = {
         });
         window.scrollTo(0, 0);
         return m(".post-list", PostModel.list.map(function (post) {
-            return m(".post.clearfix",
-                m(".post-inner", [
-                    (function () {
-                        if (post.tags.length > 0)
-                            return m("span.tags", ArrayHelpers.stringToArray(post.tags).map(function (tag) {
-                                return m("button.tag", { onclick: PostList.onTagSelection, "data-tag": tag }, tag);
-                            }));
-                    })(),
-                    m("p.title", post.title),
-                    m("span.date", StringHelpers.dateToReadable(post.date)),
-                    m("div", m.trust(MarkdownHelpers.format(
-                        StringHelpers.truncate.apply(post.body, [124, true])
-                    ))),
-                    m("a.button.button-outline.button-red", { href: "/posts/" + post.guid, oncreate: m.route.link }, "read")
-                ])
-            );
+            return m(".post.clearfix", m(".post-inner", [function () {
+                if (post.tags.length > 0) return m("span.tags", ArrayHelpers.stringToArray(post.tags).map(function (tag) {
+                    return m("button.tag", { onclick: PostList.onTagSelection, "data-tag": tag }, tag);
+                }));
+            }(), m("p.title", post.title), m("span.date", StringHelpers.dateToReadable(post.date)), m("div", m.trust(MarkdownHelpers.format(StringHelpers.truncate.apply(post.body, [124, true])))), m("a.button.button-outline.button-red", { href: "/posts/" + post.guid, oncreate: m.route.link }, "read")]));
         }));
     }
 };
@@ -2063,20 +2045,11 @@ let PostDetail = {
             duration: 200
         });
         window.scrollTo(0, 0);
-        return m(".post.clearfix",
-            m(".post-inner", [
-                (function () {
-                    if (PostModel.current.tags.length > 0)
-                        return m("span.tags", ArrayHelpers.stringToArray(PostModel.current.tags).map(function (tag) {
-                            return m("button.tag", { onclick: PostDetail.onTagSelection, "data-tag": tag }, tag);
-                        }));
-                })(),
-                m("p.title", PostModel.current.title),
-                m("span.date", StringHelpers.dateToReadable(PostModel.current.date)),
-                m("div", m.trust(MarkdownHelpers.format(PostModel.current.body))),
-                m("a.button.button-outline.button-red", { href: "./", oncreate: m.route.link }, "back")
-            ])
-        );
+        return m(".post.clearfix", m(".post-inner", [function () {
+            if (PostModel.current.tags.length > 0) return m("span.tags", ArrayHelpers.stringToArray(PostModel.current.tags).map(function (tag) {
+                return m("button.tag", { onclick: PostDetail.onTagSelection, "data-tag": tag }, tag);
+            }));
+        }(), m("p.title", PostModel.current.title), m("span.date", StringHelpers.dateToReadable(PostModel.current.date)), m("div", m.trust(MarkdownHelpers.format(PostModel.current.body))), m("a.button.button-outline.button-red", { href: "./", oncreate: m.route.link }, "back")]));
     }
 };
 

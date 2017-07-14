@@ -6,8 +6,11 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         filename: 'dist.js'
     },
-    resolve: {
-        extensions: ['.js', '.jsx'],
-        modules: ['./node_modules']
+    module: {
+        loaders: [{
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loader: 'babel-loader'
+        }]
     }
 };
