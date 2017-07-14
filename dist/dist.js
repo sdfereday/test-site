@@ -1315,28 +1315,31 @@ else window.m = m
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// src/models/Post.js
-let m = __webpack_require__(0);
-let ObjectHelpers = __webpack_require__(11);
-let StringHelpers = __webpack_require__(2);
-let ArrayHelpers = __webpack_require__(3);
-let PostData = [];
+"use strict";
 
-let Post = {
+
+// src/models/Post.js
+var m = __webpack_require__(0);
+var ObjectHelpers = __webpack_require__(11);
+var StringHelpers = __webpack_require__(2);
+var ArrayHelpers = __webpack_require__(3);
+var PostData = [];
+
+var Post = {
     list: [],
     current: {},
-    filterByTag: function (tag) {
+    filterByTag: function filterByTag(tag) {
         Post.list = Post.list.filter(function (post) {
-            let tags = ArrayHelpers.stringToArray(post.tags);
+            var tags = ArrayHelpers.stringToArray(post.tags);
             return tags.some(function (item) {
                 return item.length > 0 && item.toLowerCase() === tag.toLowerCase();
             });
         });
     },
-    resetFilters: function () {
+    resetFilters: function resetFilters() {
         Post.list = PostData;
     },
-    loadPosts: function () {
+    loadPosts: function loadPosts() {
 
         if (Post.list.length > 0) return;
 
@@ -1345,18 +1348,22 @@ let Post = {
             url: "https://sd-blog-c1b48.firebaseio.com/posts.json"
         }).then(function (snap) {
 
-            for (let key in snap) {
+            for (var key in snap) {
                 Post.list.push(snap[key]);
             }
 
-            PostData = Post.list.sort((x, y) => ArrayHelpers.sort(x.date, y.date));
+            PostData = Post.list.sort(function (x, y) {
+                return ArrayHelpers.sort(x.date, y.date);
+            });
             Post.list = PostData;
         });
     },
-    loadPost: function (guid) {
+    loadPost: function loadPost(guid) {
 
         // Should load a post if none available (try at least)
-        Post.current = Post.list.find(x => x.guid === guid);
+        Post.current = Post.list.find(function (x) {
+            return x.guid === guid;
+        });
 
         if (!Post.current) {
             Post.current = {};
@@ -1374,62 +1381,97 @@ module.exports = Post;
 
 /***/ }),
 /* 2 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-class StringHelpers {
+"use strict";
 
-    static truncate(n, useWordBoundary, endCap) {
-        endCap = endCap ? endCap : "...";
-        if (this.length <= n) {
-            return this;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var StringHelpers = function () {
+    function StringHelpers() {
+        _classCallCheck(this, StringHelpers);
+    }
+
+    _createClass(StringHelpers, null, [{
+        key: 'truncate',
+        value: function truncate(n, useWordBoundary, endCap) {
+            endCap = endCap ? endCap : "...";
+            if (this.length <= n) {
+                return this;
+            }
+            var subString = this.substr(0, n - 1);
+            return (useWordBoundary ? subString.substr(0, subString.lastIndexOf(' ')) : subString) + endCap;
         }
-        var subString = this.substr(0, n - 1);
-        return (useWordBoundary ? subString.substr(0, subString.lastIndexOf(' ')) : subString) + endCap;
-    }
+    }, {
+        key: 'dateToReadable',
+        value: function dateToReadable(ms) {
+            return new Date(ms).toString();
+        }
+    }, {
+        key: 'removeColon',
+        value: function removeColon(str) {
+            return str.replace(/^:/, '');
+        }
+    }]);
 
-    static dateToReadable(ms) {
-        return new Date(ms).toString();
-    }
-
-    static removeColon(str) {
-        return str.replace(/^:/, '');
-    }
-
-}
+    return StringHelpers;
+}();
 
 module.exports = StringHelpers;
 
 /***/ }),
 /* 3 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-class ArrayHelpers {
+"use strict";
 
-    static shuffle(a) {
-        for (let i = a.length; i; i--) {
-            let j = Math.floor(Math.random() * i);
-            [a[i - 1], a[j]] = [a[j], a[i - 1]];
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ArrayHelpers = function () {
+    function ArrayHelpers() {
+        _classCallCheck(this, ArrayHelpers);
+    }
+
+    _createClass(ArrayHelpers, null, [{
+        key: "shuffle",
+        value: function shuffle(a) {
+            for (var i = a.length; i; i--) {
+                var j = Math.floor(Math.random() * i);
+                var _ref = [a[j], a[i - 1]];
+                a[i - 1] = _ref[0];
+                a[j] = _ref[1];
+            }
+            return a;
         }
-        return a;
-    }
+    }, {
+        key: "sort",
+        value: function sort(a, b, type) {
+            type = type ? type : "desc";
+            return type === "desc" ? b - a : a - b;
+        }
+    }, {
+        key: "objToArray",
+        value: function objToArray(obj) {
+            return Object.keys(obj).map(function (e) {
+                return [Number(e), obj[e]];
+            });
+        }
+    }, {
+        key: "stringToArray",
+        value: function stringToArray(str, splitter) {
+            splitter = splitter ? splitter : ",";
+            return str.split(splitter);
+        }
+    }]);
 
-    static sort(a, b, type) {
-        type = type ? type : "desc";
-        return type === "desc" ? b - a : a - b;
-    }
-
-    static objToArray(obj) {
-        return Object.keys(obj).map(function (e) {
-            return [Number(e), obj[e]];
-        });
-    }
-
-    static stringToArray(str, splitter) {
-        splitter = splitter ? splitter : ",";
-        return str.split(splitter);
-    }
-
-}
+    return ArrayHelpers;
+}();
 
 module.exports = ArrayHelpers;
 
@@ -1462,20 +1504,34 @@ module.exports = g;
 
 /***/ }),
 /* 5 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 // External markdown formatting (needs more research as this would be better as a helper)
 // https://github.com/showdownjs/showdown
 // https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
-let Formatter = new showdown.Converter();
+var Formatter = new showdown.Converter();
 
-class MarkdownHelpers {
-
-    static format(txt) {
-        return Formatter.makeHtml(txt);
+var MarkdownHelpers = function () {
+    function MarkdownHelpers() {
+        _classCallCheck(this, MarkdownHelpers);
     }
 
-}
+    _createClass(MarkdownHelpers, null, [{
+        key: "format",
+        value: function format(txt) {
+            return Formatter.makeHtml(txt);
+        }
+    }]);
+
+    return MarkdownHelpers;
+}();
 
 module.exports = MarkdownHelpers;
 
@@ -1483,23 +1539,26 @@ module.exports = MarkdownHelpers;
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
 /// Mithril https://mithril.js.org/simple-application.html
 /// https://webpack.js.org/guides/getting-started/#basic-setup
-let m = __webpack_require__(0); // Will load when compiled via npm modules and webpack
+var m = __webpack_require__(0); // Will load when compiled via npm modules and webpack
 
-let postList = __webpack_require__(10);
-let postDetail = __webpack_require__(12);
-let postModel = __webpack_require__(1);
-let defaultLocation = "/archive";
+var postList = __webpack_require__(10);
+var postDetail = __webpack_require__(12);
+var postModel = __webpack_require__(1);
+var defaultLocation = "/archive";
 
-let routeActions = {
-    resetPosts: function () {
+var routeActions = {
+    resetPosts: function resetPosts() {
         postModel.resetFilters();
         return postList;
     }
 };
 
-let routes = {
+var routes = {
     "./": {
         onmatch: routeActions.resetPosts
     },
@@ -1962,27 +2021,30 @@ process.umask = function() { return 0; };
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// src/views/PostList.js
-let m = __webpack_require__(0);
-// let anims = require("animatelo"); <-- broken
-let PostModel = __webpack_require__(1);
-let MarkdownHelpers = __webpack_require__(5);
-let StringHelpers = __webpack_require__(2);
-let ArrayHelpers = __webpack_require__(3);
+"use strict";
 
-let PostList = {
+
+// src/views/PostList.js
+var m = __webpack_require__(0);
+// let anims = require("animatelo"); <-- broken
+var PostModel = __webpack_require__(1);
+var MarkdownHelpers = __webpack_require__(5);
+var StringHelpers = __webpack_require__(2);
+var ArrayHelpers = __webpack_require__(3);
+
+var PostList = {
     oninit: PostModel.loadPosts,
-    onbeforeremove: function (vnode) {
+    onbeforeremove: function onbeforeremove(vnode) {
         window.animatelo.slideOutLeft(".animate");
     },
-    onTagSelection: function (e, a) {
-        let tag = e.target ? e.target.getAttribute("data-tag") : "";
+    onTagSelection: function onTagSelection(e, a) {
+        var tag = e.target ? e.target.getAttribute("data-tag") : "";
         if (tag.length > 0) {
             PostModel.filterByTag(tag);
             m.route.set("/archive:" + tag);
         }
     },
-    view: function () {
+    view: function view() {
         window.animatelo.slideInLeft(".animate", {
             delay: 100,
             duration: 200
@@ -2002,15 +2064,29 @@ module.exports = PostList;
 
 /***/ }),
 /* 11 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-class ObjectHelpers {
+"use strict";
 
-    static firstInObject(obj) {
-        return obj[Object.keys(obj)[0]];
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ObjectHelpers = function () {
+    function ObjectHelpers() {
+        _classCallCheck(this, ObjectHelpers);
     }
 
-}
+    _createClass(ObjectHelpers, null, [{
+        key: "firstInObject",
+        value: function firstInObject(obj) {
+            return obj[Object.keys(obj)[0]];
+        }
+    }]);
+
+    return ObjectHelpers;
+}();
 
 module.exports = ObjectHelpers;
 
@@ -2018,28 +2094,31 @@ module.exports = ObjectHelpers;
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// src/views/PostDetail.js
-let m = __webpack_require__(0);
-let PostModel = __webpack_require__(1);
-let MarkdownHelpers = __webpack_require__(5);
-let StringHelpers = __webpack_require__(2);
-let ArrayHelpers = __webpack_require__(3);
+"use strict";
 
-let PostDetail = {
-    oninit: function (vnode) {
+
+// src/views/PostDetail.js
+var m = __webpack_require__(0);
+var PostModel = __webpack_require__(1);
+var MarkdownHelpers = __webpack_require__(5);
+var StringHelpers = __webpack_require__(2);
+var ArrayHelpers = __webpack_require__(3);
+
+var PostDetail = {
+    oninit: function oninit(vnode) {
         PostModel.loadPost(vnode.attrs.guid);
     },
-    onbeforeremove: function (vnode) {
+    onbeforeremove: function onbeforeremove(vnode) {
         window.animatelo.slideOutLeft(".animate");
     },
-    onTagSelection: function (e) {
-        let tag = e.target ? e.target.getAttribute("data-tag") : "";
+    onTagSelection: function onTagSelection(e) {
+        var tag = e.target ? e.target.getAttribute("data-tag") : "";
         if (tag.length > 0) {
             PostModel.filterByTag(tag);
             m.route.set("/archive:" + tag);
         }
     },
-    view: function () {
+    view: function view() {
         window.animatelo.slideInLeft(".animate", {
             delay: 100,
             duration: 200
