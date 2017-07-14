@@ -21,7 +21,7 @@ var Post = {
                 Post.list.push(snap[key]);
             }
 
-            Post.list.sort((x, y) => ArrayHelpers.sort(x, y));
+            Post.list = Post.list.sort((x, y) => ArrayHelpers.sort(x.date, y.date));
 
         });
 
