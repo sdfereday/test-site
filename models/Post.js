@@ -1,11 +1,24 @@
 // src/models/Post.js
-var m = require("mithril");
-var ObjectHelpers = require("../helpers/ObjectHelpers");
-var ArrayHelpers = require("../helpers/ArrayHelpers");
+let m = require("mithril");
+let ObjectHelpers = require("../helpers/ObjectHelpers");
+let StringHelpers = require("../helpers/StringHelpers");
+let ArrayHelpers = require("../helpers/ArrayHelpers");
+let PostData = [];
 
-var Post = {
+let Post = {
     list: [],
     current: {},
+    filterByTag: function(tag) {
+        Post.list = Post.list.filter(function (post) {
+            let tags = ArrayHelpers.stringToArray(post.tags);
+            return tags.some(function(item){
+                return item.length > 0 && item.toLowerCase() === tag.toLowerCase();
+            });
+        });
+    },
+    resetFilters: function() {
+        Post.list = PostData;
+    },
     loadPosts: function() {
         
         if(Post.list.length > 0)
@@ -21,7 +34,8 @@ var Post = {
                 Post.list.push(snap[key]);
             }
 
-            Post.list = Post.list.sort((x, y) => ArrayHelpers.sort(x.date, y.date));
+            PostData = Post.list.sort((x, y) => ArrayHelpers.sort(x.date, y.date));
+            Post.list = PostData;
 
         });
 

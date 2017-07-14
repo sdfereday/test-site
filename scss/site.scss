@@ -237,6 +237,33 @@ footer {
   color:#9e9e9e;
 }
 
+.tags {
+  display: block;
+  padding-bottom: 1.5em;
+}
+
+.tag, .tag:visited, .tag:active, .tag:focus {
+  height: auto;
+  border-radius: 32px;
+  margin: 0 1em 0 0;
+  padding: 0.4em 1em;
+  color: #fff;
+  font-size: 0.6em;
+  border: 0;
+  line-height: 1em;
+  background: #800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Noto Sans', sans-serif;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+  &:hover {
+    color: #fff;
+    opacity: 0.8;
+  }
+}
+
 /// Animations
 .enter-animation { opacity: 0; animation: fade-in 0.2s 0.8s ease-in forwards; }
 @keyframes fade-in {

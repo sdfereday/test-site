@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1309,47 +1309,33 @@ m.vnode = Vnode
 if (true) module["exports"] = m
 else window.m = m
 }());
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6).setImmediate, __webpack_require__(1)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7).setImmediate, __webpack_require__(4)))
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // src/models/Post.js
-var m = __webpack_require__(0);
-var ObjectHelpers = __webpack_require__(10);
-var ArrayHelpers = __webpack_require__(11);
+let m = __webpack_require__(0);
+let ObjectHelpers = __webpack_require__(11);
+let StringHelpers = __webpack_require__(2);
+let ArrayHelpers = __webpack_require__(3);
+let PostData = [];
 
-var Post = {
+let Post = {
     list: [],
     current: {},
+    filterByTag: function(tag) { console.log(tag);
+        Post.list = Post.list.filter(function (post) {
+            let tags = ArrayHelpers.stringToArray(post.tags);
+            return tags.some(function(item){
+                return item.length > 0 && item.toLowerCase() === tag.toLowerCase();
+            });
+        });
+    },
+    resetFilters: function() {
+        Post.list = PostData;
+    },
     loadPosts: function() {
         
         if(Post.list.length > 0)
@@ -1365,7 +1351,8 @@ var Post = {
                 Post.list.push(snap[key]);
             }
 
-            Post.list = Post.list.sort((x, y) => ArrayHelpers.sort(x.date, y.date));
+            PostData = Post.list.sort((x, y) => ArrayHelpers.sort(x.date, y.date));
+            Post.list = PostData;
 
         });
 
@@ -1393,7 +1380,95 @@ var Post = {
 module.exports = Post;
 
 /***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+class StringHelpers {
+
+    static truncate(n, useWordBoundary, endCap) {
+        endCap = endCap ? endCap : "...";
+        if (this.length <= n) { return this; }
+        var subString = this.substr(0, n - 1);
+        return (useWordBoundary ?
+            subString.substr(0, subString.lastIndexOf(' ')) :
+            subString) + endCap;
+    }
+
+    static dateToReadable(ms) {
+        return new Date(ms).toString();
+    }
+
+    static removeColon(str) {
+        return str.replace(/^:/, '');
+    } 
+
+}
+
+module.exports = StringHelpers;
+
+/***/ }),
 /* 3 */
+/***/ (function(module, exports) {
+
+class ArrayHelpers {
+
+    static shuffle(a) {
+        for (let i = a.length; i; i--) {
+            let j = Math.floor(Math.random() * i);
+            [a[i - 1], a[j]] = [a[j], a[i - 1]];
+        }
+        return a;
+    }
+
+    static sort(a, b, type) {
+        type = type ? type : "desc";
+        return type === "desc" ? b - a : a - b;
+    }
+
+    static objToArray(obj) {
+        return Object.keys(obj).map(function (e) {
+            return [Number(e), obj[e]];
+        });
+    }
+
+    static stringToArray(str, splitter) {
+        splitter = splitter ? splitter : ",";
+        return str.split(splitter);
+    }
+
+}
+
+module.exports = ArrayHelpers;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports) {
 
 // External markdown formatting (needs more research as this would be better as a helper)
@@ -1412,43 +1487,36 @@ class MarkdownHelpers {
 module.exports = MarkdownHelpers;
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports) {
-
-class StringHelpers {
-
-    static truncate(n, useWordBoundary, endCap) {
-        endCap = endCap ? endCap : "...";
-        if (this.length <= n) { return this; }
-        var subString = this.substr(0, n - 1);
-        return (useWordBoundary ?
-            subString.substr(0, subString.lastIndexOf(' ')) :
-            subString) + endCap;
-    }
-
-    static dateToReadable(ms) {
-        return new Date(ms).toString();
-    }
-
-}
-
-module.exports = StringHelpers;
-
-/***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /// Mithril https://mithril.js.org/simple-application.html
 /// https://webpack.js.org/guides/getting-started/#basic-setup
-var m = __webpack_require__(0); // Will load when compiled via npm modules and webpack
+let m = __webpack_require__(0); // Will load when compiled via npm modules and webpack
 
-var postList = __webpack_require__(9);
-var postDetail = __webpack_require__(12);
-var defaultLocation = "/archive";
-var routes = {
-    "./": postList,
-    "/": postList,
-    "/archive": postList,
+let postList = __webpack_require__(10);
+let postDetail = __webpack_require__(12);
+let postModel = __webpack_require__(1);
+let defaultLocation = "/archive";
+
+let routeActions = {
+    resetPosts: function(){
+        postModel.resetFilters();
+        return postList;
+    }
+};
+
+let routes = {
+    "./":  {
+        onmatch: routeActions.resetPosts
+    },
+    "/":  {
+        onmatch: routeActions.resetPosts
+    },
+    "/archive": {
+        onmatch: routeActions.resetPosts
+    },
+    "/archive:tag": postList,
     "/posts/:guid": postDetail
 };
 
@@ -1456,7 +1524,7 @@ m.route(document.querySelector('.m-content'), defaultLocation, routes);
 m.render(document.querySelector('.heading'), m("a", { href: "./", oncreate: m.route.link }, "DevNoodle Blog"));
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = Function.prototype.apply;
@@ -1509,13 +1577,13 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(7);
+__webpack_require__(8);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -1705,10 +1773,10 @@ exports.clearImmediate = clearImmediate;
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(8)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(9)))
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -1898,30 +1966,44 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // src/views/PostList.js
-var m = __webpack_require__(0);
-// var anims = require("animatelo"); <-- broken
-var PostModel = __webpack_require__(2);
-var MarkdownHelpers = __webpack_require__(3);
-var StringHelpers = __webpack_require__(4);
+let m = __webpack_require__(0);
+// let anims = require("animatelo"); <-- broken
+let PostModel = __webpack_require__(1);
+let MarkdownHelpers = __webpack_require__(5);
+let StringHelpers = __webpack_require__(2);
+let ArrayHelpers = __webpack_require__(3);
 
-module.exports = {
+let PostList = {
     oninit: PostModel.loadPosts,
-    onbeforeremove: function(vnode) {
+    onbeforeremove: function (vnode) {
         window.animatelo.slideOutLeft(".animate");
     },
-    view: function() {
+    onTagSelection: function (e, a) {
+        let tag = e.target ? e.target.getAttribute("data-tag") : "";
+        if (tag.length > 0) {
+            PostModel.filterByTag(tag);
+            m.route.set("/archive:" + tag);
+        }
+    },
+    view: function () {
         window.animatelo.slideInLeft(".animate", {
             delay: 100,
             duration: 200
         });
         window.scrollTo(0, 0);
-        return m(".post-list", PostModel.list.map(function(post) {
+        return m(".post-list", PostModel.list.map(function (post) {
             return m(".post.clearfix",
                 m(".post-inner", [
+                    (function () {
+                        if (post.tags.length > 0)
+                            return m("span.tags", ArrayHelpers.stringToArray(post.tags).map(function (tag) {
+                                return m("button.tag", { onclick: PostList.onTagSelection, "data-tag": tag }, tag);
+                            }));
+                    })(),
                     m("p.title", post.title),
                     m("span.date", StringHelpers.dateToReadable(post.date)),
                     m("div", m.trust(MarkdownHelpers.format(
@@ -1932,10 +2014,12 @@ module.exports = {
             );
         }));
     }
-}
+};
+
+module.exports = PostList;
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports) {
 
 class ObjectHelpers {
@@ -1949,50 +2033,29 @@ class ObjectHelpers {
 module.exports = ObjectHelpers;
 
 /***/ }),
-/* 11 */
-/***/ (function(module, exports) {
-
-class ArrayHelpers {
-
-    static shuffle(a) {
-        for (let i = a.length; i; i--) {
-            let j = Math.floor(Math.random() * i);
-            [a[i - 1], a[j]] = [a[j], a[i - 1]];
-        }
-        return a;
-    }
-
-    static sort(a, b, type) {
-        type = type ? type : "desc";
-        return type === "desc" ? b - a : a - b;
-    }
-
-    static objToArray(obj) {
-        return Object.keys(obj).map(function (e) {
-            return [Number(e), obj[e]];
-        });
-    }
-
-}
-
-module.exports = ArrayHelpers;
-
-/***/ }),
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // src/views/PostDetail.js
-var m = __webpack_require__(0);
-var PostModel = __webpack_require__(2);
-var MarkdownHelpers = __webpack_require__(3);
-var StringHelpers = __webpack_require__(4);
+let m = __webpack_require__(0);
+let PostModel = __webpack_require__(1);
+let MarkdownHelpers = __webpack_require__(5);
+let StringHelpers = __webpack_require__(2);
+let ArrayHelpers = __webpack_require__(3);
 
-module.exports = {
+let PostDetail = {
     oninit: function (vnode) {
         PostModel.loadPost(vnode.attrs.guid);
     },
     onbeforeremove: function (vnode) {
         window.animatelo.slideOutLeft(".animate");
+    },
+    onTagSelection: function (e) {
+        let tag = e.target ? e.target.getAttribute("data-tag") : "";
+        if (tag.length > 0) {
+            PostModel.filterByTag(tag);
+            m.route.set("/archive:" + tag);
+        }
     },
     view: function () {
         window.animatelo.slideInLeft(".animate", {
@@ -2002,6 +2065,12 @@ module.exports = {
         window.scrollTo(0, 0);
         return m(".post.clearfix",
             m(".post-inner", [
+                (function () {
+                    if (PostModel.current.tags.length > 0)
+                        return m("span.tags", ArrayHelpers.stringToArray(PostModel.current.tags).map(function (tag) {
+                            return m("button.tag", { onclick: PostDetail.onTagSelection, "data-tag": tag }, tag);
+                        }));
+                })(),
                 m("p.title", PostModel.current.title),
                 m("span.date", StringHelpers.dateToReadable(PostModel.current.date)),
                 m("div", m.trust(MarkdownHelpers.format(PostModel.current.body))),
@@ -2009,7 +2078,9 @@ module.exports = {
             ])
         );
     }
-}
+};
+
+module.exports = PostDetail;
 
 /***/ })
 /******/ ]);

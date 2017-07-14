@@ -19,6 +19,11 @@ class ArrayHelpers {
         });
     }
 
+    static stringToArray(str, splitter) {
+        splitter = splitter ? splitter : ",";
+        return str.split(splitter);
+    }
+
 }
 
 module.exports = ArrayHelpers;

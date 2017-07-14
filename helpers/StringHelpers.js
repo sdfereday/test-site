@@ -13,6 +13,10 @@ class StringHelpers {
         return new Date(ms).toString();
     }
 
+    static removeColon(str) {
+        return str.replace(/^:/, '');
+    } 
+
 }
 
 module.exports = StringHelpers;

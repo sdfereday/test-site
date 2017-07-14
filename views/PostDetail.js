@@ -1,15 +1,23 @@
 // src/views/PostDetail.js
-var m = require("mithril");
-var PostModel = require("../models/Post");
-var MarkdownHelpers = require("../helpers/MarkdownHelpers");
-var StringHelpers = require("../helpers/StringHelpers");
+let m = require("mithril");
+let PostModel = require("../models/Post");
+let MarkdownHelpers = require("../helpers/MarkdownHelpers");
+let StringHelpers = require("../helpers/StringHelpers");
+let ArrayHelpers = require("../helpers/ArrayHelpers");
 
-module.exports = {
+let PostDetail = {
     oninit: function (vnode) {
         PostModel.loadPost(vnode.attrs.guid);
     },
     onbeforeremove: function (vnode) {
         window.animatelo.slideOutLeft(".animate");
+    },
+    onTagSelection: function (e) {
+        let tag = e.target ? e.target.getAttribute("data-tag") : "";
+        if (tag.length > 0) {
+            PostModel.filterByTag(tag);
+            m.route.set("/archive:" + tag);
+        }
     },
     view: function () {
         window.animatelo.slideInLeft(".animate", {
@@ -19,6 +27,12 @@ module.exports = {
         window.scrollTo(0, 0);
         return m(".post.clearfix",
             m(".post-inner", [
+                (function () {
+                    if (PostModel.current.tags.length > 0)
+                        return m("span.tags", ArrayHelpers.stringToArray(PostModel.current.tags).map(function (tag) {
+                            return m("button.tag", { onclick: PostDetail.onTagSelection, "data-tag": tag }, tag);
+                        }));
+                })(),
                 m("p.title", PostModel.current.title),
                 m("span.date", StringHelpers.dateToReadable(PostModel.current.date)),
                 m("div", m.trust(MarkdownHelpers.format(PostModel.current.body))),
@@ -26,4 +40,6 @@ module.exports = {
             ])
         );
     }
-}
+};
+
+module.exports = PostDetail;
